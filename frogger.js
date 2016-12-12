@@ -743,7 +743,7 @@ var frogger = (function(){
     function render(){
          
 		renderer.render(scene, camera); 
-       // animate();	
+        animate();	
 		check_collision();
 		if(life_lost == 3)
 		  game_over();
