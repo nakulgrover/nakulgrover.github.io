@@ -29,7 +29,7 @@ var frogger = (function(){
 	var translatespeed = 1;
 	
     function initScene(){
-		audio_main  = new Audio('01-super-mario-bros.mp3');
+		audio_main  = new Audio("https://nakulgrover.github.io/01-super-mario-bros.mp3");
         audio_main.play();
 		
 		
@@ -38,7 +38,6 @@ var frogger = (function(){
 		
 		
 
-		THREE.ImageUtils.crossOrigin = 'anonymous'
 		
         document.getElementById("webgl-container").appendChild(renderer.domElement);
 
@@ -57,7 +56,12 @@ var frogger = (function(){
         1000
         );
           
-		camera.position.z =  130;
+	   
+	   camera.position.y = -70;
+	   camera.position.z =  95;
+	
+	// rotate to face towards the opponent
+	   camera.rotation.x = 30* Math.PI/180;
 	   
         scene.add( camera ); 
 
@@ -65,7 +69,13 @@ var frogger = (function(){
 		
 		/////////// ADD ROAD /////////
 		
+
+		
 		var loader = new THREE.TextureLoader();
+		
+
+		
+				
 		//var textureroad = THREE.ImageUtils.loadTexture("https://nakulgrover.github.io/road.jpg");
 		var textureroad = loader.load("https://nakulgrover.github.io/road.jpg");
 
@@ -357,13 +367,17 @@ var frogger = (function(){
 	
 		/////////// ADD FROG /////////
 
-				var texturefrog = loader.load("https://nakulgrover.github.io/frog.jpg");
+		var texturefrog = loader.load("https://nakulgrover.github.io/frog.jpg");
 
-		//var texturefrog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/frog.jpg');
+
 
 		texturefrog.wrapS = THREE.RepeatWrapping;
         texturefrog.wrapT = THREE.RepeatWrapping;
 		texturefrog.repeat.set(1, 1.0);
+		
+		
+	
+		
 		
 		var frogMaterial = new THREE.MeshPhongMaterial( {map: texturefrog, side: THREE.SingleSide} );
 		frog = new THREE.Mesh( new THREE.BoxGeometry(4,4,4), frogMaterial);
@@ -372,6 +386,7 @@ var frogger = (function(){
 
 	    frog.geometry.computeBoundingBox();
 
+		
 		
         scene.add(frog);
 		
@@ -478,14 +493,27 @@ var frogger = (function(){
 					     audio_main.pause();
                          audio_over = new Audio('16-game-over.mp3');
                          audio_over.play();
-				//	     alert('GAME OVER');	
+				//	     alert('GAME OVER !!');	
 						 life_lost = 0;
 						 score = 0; pressed_up = 0;
 						 			 document.getElementById("Score").innerHTML = score;
 
 						 			 document.getElementById("numberOfLives").innerHTML = 3;
+			 frog . position.x = 0; frog.position.y = -40;
 
+			 var delay=4000; //1 second
 
+          setTimeout(function() {
+  //your code to be executed after 1 second
+  		
+ 
+         audio_main.currentTime = 0;
+		 audio_main.play();
+				 
+	 
+
+         }, delay);
+            
                         						 
 	}
 	
@@ -499,14 +527,22 @@ var frogger = (function(){
 			 document.getElementById("numberOfLives").innerHTML = 3-life_lost;
 
 			 audio_main.pause();
-		     audio_down = new Audio('15-1-down.mp3');
+		     audio_down = new Audio("https://nakulgrover.github.io/15-1-down.mp3");
              audio_down.play();
-		    // alert('TRY AGAIN');
-			// audio_main.play();
-			
+		    // alert('TRY AGAIN !!');
+ frog . position.x = 0; frog.position.y = -40;
+          var delay=3000; //1 second
+
+          setTimeout(function() {
+  //your code to be executed after 1 second
+  		  
+		 audio_main.play();
+				 
+
+         }, delay);
 		   }
-        frog . position.x = 0;
-		frog.position.y = -40;		   
+        	  
+			  
 	}
 
 
@@ -518,12 +554,22 @@ var frogger = (function(){
 			 document.getElementById("Score").innerHTML = score;
 			 
 			 audio_main.pause();
-		     audio_level = new Audio('04-area-clear.mp3');
+		     audio_level = new Audio("https://nakulgrover.github.io/04-area-clear.mp3");
              audio_level.play();
-		  //   alert('CONGRATULATIONS !!');
-			// audio_main.play();
-		     frog . position.x = 0; frog.position.y = -40;
+		     //alert('CONGRATULATIONS !!');
+			 frog . position.x = 0; frog.position.y = -40;
+             
+			 var delay=6000; //1 second
 
+          setTimeout(function() {
+  //your code to be executed after 1 second
+  		 
+		   audio_main.currentTime = 0;
+		 audio_main.play();
+				 
+
+         }, delay);
+			 
 	}
 		
 	
@@ -672,9 +718,7 @@ var frogger = (function(){
         
 		
 		animate();	
-
-		
-	       
+   
 		check_collision();
 		if((frog.position.y >=15) && (frog.position.y<=45))
 	      check_log();
@@ -698,16 +742,15 @@ var frogger = (function(){
         e = e || window.event;
 
         if (e.keyCode == up) {
-		    pressed_up = 1;	 play();
+		    pressed_up = 1;
            frog.position.y += increment;
 		} else if (e.keyCode == down) {
-            frog.position.y -= increment;play();
+            frog.position.y -= increment;
         } else if (e.keyCode == left) {
-            frog.position.x -= increment;play();
+            frog.position.x -= increment;
         } else if (e.keyCode == right) {
-            frog.position.x += increment;play();
+            frog.position.x += increment;
         }
-		
 		
          else if (e.keyCode == 81) {
             camera.position.z -= increment;
@@ -749,7 +792,7 @@ var frogger = (function(){
 	
 	}
 	
-	var threed = 0;
+	var threed = 1;
 	
   function myFunction() {
 		
@@ -772,11 +815,7 @@ var frogger = (function(){
 	}
    }
    
-     function play(){
-		 
-		 audio_main.play();
-				 
-	 }
+    
 	 
 	
 
