@@ -497,8 +497,7 @@ var frogger = (function(){
 	function next_life(){
 
     	life_lost++;		     
-		frog . position.x = 0;
-		frog.position.y = -40;
+		
         pressed_up = 0;
 		
 		if(life_lost != 3){
@@ -509,14 +508,16 @@ var frogger = (function(){
              audio_down.play();
 		     alert('TRY AGAIN');
 			// audio_main.play();
-		   }			 
+			
+		   }
+        frog . position.x = 0;
+		frog.position.y = -40;		   
 	}
 
 
 	function change_level(){
 		
 		
-		     frog . position.x = 0; frog.position.y = -40;
 			 
 			 score+=100; pressed_up = 0;
 			 document.getElementById("Score").innerHTML = score;
@@ -526,7 +527,8 @@ var frogger = (function(){
              audio_level.play();
 		     alert('CONGRATULATIONS !!');
 			// audio_main.play();
-		   		 		
+		     frog . position.x = 0; frog.position.y = -40;
+
 	}
 		
 	
