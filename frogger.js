@@ -508,7 +508,7 @@ var frogger = (function(){
 		     audio_down = new Audio('15-1-down.mp3');
              audio_down.play();
 		     alert('TRY AGAIN');
-			 audio_main.play();
+			// audio_main.play();
 		   }			 
 	}
 
@@ -525,7 +525,7 @@ var frogger = (function(){
 		     audio_level = new Audio('04-area-clear.mp3');
              audio_level.play();
 		     alert('CONGRATULATIONS !!');
-			 audio_main.play();
+			// audio_main.play();
 		   		 		
 	}
 		
@@ -672,10 +672,12 @@ var frogger = (function(){
     function render(){
          
 		renderer.render(scene, camera); 
-        animate();	
+        
+		audio_main.play();
+		animate();	
 
 		
-	  
+	       
 		check_collision();
 		if((frog.position.y >=15) && (frog.position.y<=45))
 	      check_log();
