@@ -26,7 +26,7 @@ var frogger = (function(){
 	var life_lost = 0;
 	var frogposition;
 	var pressed_up = 0;
-	
+	var translatespeed = 1;
 	
     function initScene(){
 		audio_main  = new Audio('01-super-mario-bros.mp3');
@@ -400,79 +400,79 @@ var frogger = (function(){
 
 	function animate(){
 		
-		logs[0].translateX(2.0);
-        logs[1].translateX(2.0);
-        logs[2].translateX(2.0);
-		logs[3].translateX(-2);
-        logs[4].translateX(-2);
-        logs[5].translateX(-2);
-		logs[6].translateX(2.5);
-        logs[7].translateX(2.5);
-        logs[8].translateX(2.5);
+		logs[0].translateX(2.0*translatespeed);
+        logs[1].translateX(2.0*translatespeed);
+        logs[2].translateX(2.0*translatespeed);
+		logs[3].translateX(-2*translatespeed);
+        logs[4].translateX(-2*translatespeed);
+        logs[5].translateX(-2*translatespeed);
+		logs[6].translateX(2.5*translatespeed);
+        logs[7].translateX(2.5*translatespeed);
+        logs[8].translateX(2.5*translatespeed);
 		
 		        
-		if( logs[0].position.x == 100)		
+		if( logs[0].position.x >= 100)		
 		logs[0].position.x = -100;
-     	if( logs[1].position.x == 100)		
+     	if( logs[1].position.x >= 100)		
 		logs[1].position.x = -100;
-	    if( logs[2].position.x == 100)		
+	    if( logs[2].position.x >= 100)		
 		logs[2].position.x = -100;
-	    if( logs[3].position.x == -100)		
+	    if( logs[3].position.x <= -100)		
 		logs[3].position.x = 100;
-     	if( logs[4].position.x == -100)		
+     	if( logs[4].position.x <= -100)		
 		logs[4].position.x = 100;
-	    if( logs[5].position.x == -100)		
+	    if( logs[5].position.x <= -100)		
 		logs[5].position.x = 100;
-	    if( logs[6].position.x == 100)		
+	    if( logs[6].position.x >= 100)		
 		logs[6].position.x = -100;
-     	if( logs[7].position.x == 100)		
+     	if( logs[7].position.x >= 100)		
 		logs[7].position.x = -100;
-	    if( logs[8].position.x == 100)		
+	    if( logs[8].position.x >= 100)		
 		logs[8].position.x = -100;
 	 
 	    
-		vehicle[0].translateX(1);
-		vehicle[1].translateX(1);
-		vehicle[2].translateX(1);
-		vehicle[3].translateX(-2);
-		vehicle[4].translateX(-2);
-		vehicle[5].translateX(-2);
+		vehicle[0].translateX(1*translatespeed);
+		vehicle[1].translateX(1*translatespeed);
+		vehicle[2].translateX(1*translatespeed);
+		vehicle[3].translateX(-2*translatespeed);
+		vehicle[4].translateX(-2*translatespeed);
+		vehicle[5].translateX(-2*translatespeed);
 
-		vehicle[6].translateX(2);
-		vehicle[7].translateX(2);
-		vehicle[8].translateX(2);
-		vehicle[9].translateX(-2.5);
-		vehicle[10].translateX(-2.5);
-		vehicle[11].translateX(-2.5);
+		vehicle[6].translateX(2*translatespeed);
+		vehicle[7].translateX(2*translatespeed);
+		vehicle[8].translateX(2*translatespeed);
+		vehicle[9].translateX(-2.5*translatespeed);
+		vehicle[10].translateX(-2.5*translatespeed);
+		vehicle[11].translateX(-2.5*translatespeed);
 
 		
-		if( vehicle[0].position.x == 100)		
+		if( vehicle[0].position.x >= 100)		
 		vehicle[0].position.x = -100;
-	    if( vehicle[1].position.x == 100)		
+	    if( vehicle[1].position.x >= 100)		
 		vehicle[1].position.x = -100;
-	    if( vehicle[2].position.x == 100)		
+	    if( vehicle[2].position.x >= 100)		
 		vehicle[2].position.x = -100;
-	    if( vehicle[3].position.x == -100)		
+	    if( vehicle[3].position.x <= -100)		
 		vehicle[3].position.x = 100;
-	    if( vehicle[4].position.x == -100)		
+	    if( vehicle[4].position.x <= -100)		
 		vehicle[4].position.x = 100;
-	    if( vehicle[5].position.x == -100)		
+	    if( vehicle[5].position.x <= -100)		
 		vehicle[5].position.x = 100;
-      	if( vehicle[6].position.x == 100)		
+      	if( vehicle[6].position.x <= 100)		
 		vehicle[6].position.x = -100;
-	    if( vehicle[7].position.x == 100)		
+	    if( vehicle[7].position.x >= 100)		
 		vehicle[7].position.x = -100;
-	    if( vehicle[8].position.x == 100)		
+	    if( vehicle[8].position.x >= 100)		
 		vehicle[8].position.x = -100;
-	    if( vehicle[9].position.x == -100)		
+	    if( vehicle[9].position.x <= -100)		
 		vehicle[9].position.x = 100;
-	    if( vehicle[10].position.x == -100)		
+	    if( vehicle[10].position.x <= -100)		
 		vehicle[10].position.x = 100;
-	    if( vehicle[11].position.x == -100)		
+	    if( vehicle[11].position.x <= -100)		
 		vehicle[11].position.x = 100;
 		
-		snake.translateX(1.0);
-		if(snake.position.x == 100)
+		snake.translateX(1.0*translatespeed);
+		if(snake.position.x >= 100)
 		snake.position.x = -100;	
 	}
 	
@@ -610,56 +610,56 @@ var frogger = (function(){
 	
 
 	  if(logsposition0.isIntersectionBox(frogposition)){
-	  frog.translateX(2);		if(pressed_up == 1){   
+	  frog.translateX(2*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition1.isIntersectionBox(frogposition)){
-	  frog.translateX(2);		if(pressed_up == 1){   
+	  frog.translateX(2*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition2.isIntersectionBox(frogposition)){
 	  
-	  frog.translateX(2);   if(pressed_up == 1){   
+	  frog.translateX(2*translatespeed);   if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}		
 	  else if(logsposition3.isIntersectionBox(frogposition)){
-	  frog.translateX(-2);		if(pressed_up == 1){   
+	  frog.translateX(-2*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition4.isIntersectionBox(frogposition)){
-	  frog.translateX(-2);		if(pressed_up == 1){   
+	  frog.translateX(-2*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition5.isIntersectionBox(frogposition)){
-	  frog.translateX(-2);   if(pressed_up == 1){   
+	  frog.translateX(-2*translatespeed);   if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition6.isIntersectionBox(frogposition)){
-	  frog.translateX(2.5);		if(pressed_up == 1){   
+	  frog.translateX(2.5*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition7.isIntersectionBox(frogposition)){
-	  frog.translateX(2.5);		if(pressed_up == 1){   
+	  frog.translateX(2.5*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
 	  else if(logsposition8.isIntersectionBox(frogposition)){
-	  frog.translateX(2.5);		if(pressed_up == 1){   
+	  frog.translateX(2.5*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
@@ -740,8 +740,14 @@ var frogger = (function(){
         } else if (e.keyCode == 80) {
             camera.rotation.z += increment*Math.PI/180;
         }
+		else if (e.keyCode == 32) {
+            translatespeed -= 0.5;
+        } else if (e.keyCode == 8) {
+           translatespeed += 0.5;
+        }
 		
-		
+      	
+	
 	}
 	
 	var threed = 0;
