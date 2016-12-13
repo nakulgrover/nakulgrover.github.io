@@ -71,7 +71,7 @@ var frogger = (function(){
 
 		textureroad.wrapS = THREE.RepeatWrapping;
         textureroad.wrapT = THREE.RepeatWrapping;
-		textureroad.repeat.set(3, 1);
+		textureroad.repeat.set(9, 1);
 
 		
 
@@ -478,7 +478,7 @@ var frogger = (function(){
 					     audio_main.pause();
                          audio_over = new Audio('16-game-over.mp3');
                          audio_over.play();
-					     alert('GAME OVER');	
+				//	     alert('GAME OVER');	
 						 life_lost = 0;
 						 score = 0; pressed_up = 0;
 						 			 document.getElementById("Score").innerHTML = score;
@@ -501,7 +501,7 @@ var frogger = (function(){
 			 audio_main.pause();
 		     audio_down = new Audio('15-1-down.mp3');
              audio_down.play();
-		     alert('TRY AGAIN');
+		    // alert('TRY AGAIN');
 			// audio_main.play();
 			
 		   }
@@ -520,7 +520,7 @@ var frogger = (function(){
 			 audio_main.pause();
 		     audio_level = new Audio('04-area-clear.mp3');
              audio_level.play();
-		     alert('CONGRATULATIONS !!');
+		  //   alert('CONGRATULATIONS !!');
 			// audio_main.play();
 		     frog . position.x = 0; frog.position.y = -40;
 
