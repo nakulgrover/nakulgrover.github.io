@@ -673,7 +673,9 @@ var frogger = (function(){
          
 		renderer.render(scene, camera); 
         
+		if((audio_down.ended) && (audio_over.ended) && (audio_level.ended))
 		audio_main.play();
+		
 		animate();	
 
 		
