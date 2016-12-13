@@ -1,11 +1,5 @@
 var frogger = (function(){
 
-//http://downloads.khinsider.com/search?search=super+mario+bros+jump
-  //https://github.com/alexmackey/threeJsBasicExamples
-  
-  
-  //host on gh-pages
-
   
   var scene=new THREE.Scene(),
     renderer = new THREE.WebGLRenderer(),
@@ -28,30 +22,21 @@ var frogger = (function(){
 	var audio_down;
 	var audio_over;
 	var audio_level;
+	var score = 0;
+	var life_lost = 0;
+	var frogposition;
+	var pressed_up = 0;
+	
 	
     function initScene(){
 		audio_main  = new Audio('01-super-mario-bros.mp3');
         audio_main.play();
 		
 		
-		
-		/*
-		camera = new THREE.OrthographicCamera();
-        camera.left = 3000 / -2;
-        camera.right = 3000 / 2;
-        camera.top = 2000 / 2;
-        camera.bottom = 2000 / -2;
-        camera.near = 0.1;
-        camera.far = 1500;
-        camera.updateProjectionMatrix();
-		*/
-     //   renderer.setSize( 3000, 2000 );
-	      renderer.setSize( 3000,2000  );
+	    renderer.setSize( 3000,2000  );
 
-		//   camera.position.x = 500;
-       // camera.position.y = -100;
-        //camera.position.z = -300;
-		  
+		
+		
 		renderer.shadowMapEnabled = true;
 
 		THREE.ImageUtils.crossOrigin = 'anonymous'
@@ -62,7 +47,7 @@ var frogger = (function(){
 
 		light.position.set(0, 50, 0);
 
-				light.castShadow = true;
+		light.castShadow = true;
 
        // light.shadowMapWidth = 2048;
        // light.shadowMapHeight = 2048;
@@ -71,27 +56,14 @@ var frogger = (function(){
                           
         camera = new THREE.PerspectiveCamera(
         45,
-      //  window.innerWidth / window.innerHeight,
-       3000/2000,
+        3000/2000,
     	1,
         1000
         );
           
-       
-		  
-        
-		
-	//	camera.position.x =  - 400;
-	//camera.position.y = -180;
-	camera.position.z =  130;
-	
-	// rotate to face towards the opponent
-	//camera.rotation.x = 90* Math.PI/180;
-	//camera.rotation.y = 10 * Math.PI/180;
-	//camera.rotation.z = -10 * Math.PI/180;
-		
-		
-		scene.add( camera ); 
+		camera.position.z =  130;
+	   
+        scene.add( camera ); 
 
 		
 		
@@ -113,18 +85,10 @@ var frogger = (function(){
 		
 		/////////// ADD VEHICLE /////////
 
-		var texturecar = THREE.ImageUtils.loadTexture('car.jpg');
-
-		texturecar.wrapS = THREE.RepeatWrapping;
-        texturecar.wrapT = THREE.RepeatWrapping;
-		texturecar.repeat.set(1, 1);
-		
-		//var carMaterial = new THREE.MeshPhongMaterial( {map: texturecar, side: THREE.DoubleSide} );
-		//vehicle[0] = new THREE.Mesh( new THREE.BoxGeometry(14,5,5), carMaterial);
 		
 		
 		vehicle[0] = new THREE.Mesh(
-        new THREE.BoxGeometry(14,5,5),
+        new THREE.BoxGeometry(14,5,15),
         new THREE.MeshBasicMaterial({color: 0xFF4500})
         );
   
@@ -148,7 +112,7 @@ var frogger = (function(){
 		vehicle[2].position.x = 60;
 
 		vehicle[3] = new THREE.Mesh(
-        new THREE.BoxGeometry(10,5,5),
+        new THREE.BoxGeometry(10,5,15),
         new THREE.MeshBasicMaterial({color: 0x4545FF})
         );
   
@@ -156,7 +120,7 @@ var frogger = (function(){
 		vehicle[3].position.x = 60;
 		
 		vehicle[4] = new THREE.Mesh(
-        new THREE.BoxGeometry(12,5,5),
+        new THREE.BoxGeometry(12,5,10),
         new THREE.MeshBasicMaterial({color: 0xFF45FF})
         );
   
@@ -172,7 +136,7 @@ var frogger = (function(){
 		vehicle[5].position.x = -60;
 		
 		vehicle[6] = new THREE.Mesh(
-        new THREE.BoxGeometry(14,5,5),
+        new THREE.BoxGeometry(14,5,10),
         new THREE.MeshBasicMaterial({color: 0xFF4500})
         );
   
@@ -188,7 +152,7 @@ var frogger = (function(){
 		vehicle[7].position.x = 0;
 		
 		vehicle[8] = new THREE.Mesh(
-        new THREE.BoxGeometry(9,5,5),
+        new THREE.BoxGeometry(9,5,10),
         new THREE.MeshBasicMaterial({color: 0x0045FF})
         );
   
@@ -212,7 +176,7 @@ var frogger = (function(){
 		vehicle[10].position.x = 0;
 		
 		vehicle[11] = new THREE.Mesh(
-        new THREE.BoxGeometry(8,5,5),
+        new THREE.BoxGeometry(8,5,10),
         new THREE.MeshBasicMaterial({color: 0x454545})
         );
   
@@ -234,6 +198,17 @@ var frogger = (function(){
 		vehicle[11].geometry.computeBoundingBox();
 
 		vehicle[0].castShadow = true;
+		vehicle[1].castShadow = true;
+		vehicle[2].castShadow = true;
+		vehicle[3].castShadow = true;
+		vehicle[4].castShadow = true;
+		vehicle[5].castShadow = true;
+		vehicle[6].castShadow = true;
+		vehicle[7].castShadow = true;
+		vehicle[8].castShadow = true;
+		vehicle[9].castShadow = true;
+		vehicle[10].castShadow = true;
+		vehicle[11].castShadow = true;
 
 		
         scene.add(vehicle[0]);
@@ -253,14 +228,14 @@ var frogger = (function(){
 		
 	    /////////// ADD RIVER /////////
 
-		var textureriver = THREE.ImageUtils.loadTexture('river.jpg');
+		var textureriver = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/river.jpg');
 		textureriver.wrapS = THREE.RepeatWrapping;
         textureriver.wrapT = THREE.RepeatWrapping;
 		textureriver.repeat.set(1, 1);
 		
 		var riverMaterial = new THREE.MeshPhongMaterial( {map: textureriver, side: THREE.DoubleSide} );
-		river = new THREE.Mesh( new THREE.BoxGeometry(200, 55), riverMaterial);
-        river . position.y = 40;
+		river = new THREE.Mesh( new THREE.BoxGeometry(200, 35), riverMaterial);
+        river . position.y = 30;
 		
 		scene.add(river);
 		
@@ -268,7 +243,7 @@ var frogger = (function(){
 		/////////// ADD LOGS /////////
 
 		
-		var texturelog = THREE.ImageUtils.loadTexture('logs.jpg');
+		var texturelog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/logs.jpg');
 
 		texturelog.wrapS = THREE.RepeatWrapping;
         texturelog.wrapT = THREE.RepeatWrapping;
@@ -277,102 +252,60 @@ var frogger = (function(){
 		var logMaterial = new THREE.MeshPhongMaterial( {map: texturelog, side: THREE.DoubleSide} );
 		logs[0] = new THREE.Mesh( new THREE.BoxGeometry(17,3,3), logMaterial);
         
-		
-	//	logs[0] = new THREE.Mesh(
-     //   new THREE.BoxGeometry(17,3,3),
-     //   new THREE.MeshBasicMaterial({color: 0xA52A2A})
-      //  );
-  
-        logs[0].position.y = 20;
+	    logs[0].position.y = 20;
 		logs[0].position.x = -60;
 		
-		logs[1] = new THREE.Mesh(
-        new THREE.BoxGeometry(15,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
+		
+		
+  		logs[1] = new THREE.Mesh( new THREE.BoxGeometry(15,3,3), logMaterial);
+
   
         logs[1].position.y = 20;
 		logs[1].position.x = 0;
 		
-		logs[2] = new THREE.Mesh(
-        new THREE.BoxGeometry(10,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+		
+    	logs[2] = new THREE.Mesh( new THREE.BoxGeometry(10,3,3), logMaterial);
+
         logs[2].position.y = 20;
 		logs[2].position.x = 60;
 		
-		logs[3] = new THREE.Mesh(
-        new THREE.BoxGeometry(17,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+		
+    	logs[3] = new THREE.Mesh( new THREE.BoxGeometry(17,3,3), logMaterial);
+
         logs[3].position.y = 30;
 		logs[3].position.x = -60;
 		
-		logs[4] = new THREE.Mesh(
-        new THREE.BoxGeometry(20,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+		
+    	logs[4] = new THREE.Mesh( new THREE.BoxGeometry(20,3,3), logMaterial);
+
         logs[4].position.y = 30;
 		logs[4].position.x = 0;
 		
-		logs[5] = new THREE.Mesh(
-        new THREE.BoxGeometry(13,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+			
+		logs[5] = new THREE.Mesh( new THREE.BoxGeometry(13,3,3), logMaterial);
+
         logs[5].position.y = 30;
 		logs[5].position.x = 60;
 		
-		logs[6] = new THREE.Mesh(
-        new THREE.BoxGeometry(17,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+		
+    	logs[6] = new THREE.Mesh( new THREE.BoxGeometry(17,3,3), logMaterial);
+
         logs[6].position.y = 40;
 		logs[6].position.x = -60;
 		
-		logs[7] = new THREE.Mesh(
-        new THREE.BoxGeometry(10,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+		
+    	logs[7] = new THREE.Mesh( new THREE.BoxGeometry(10,3,3), logMaterial);
+
         logs[7].position.y = 40;
 		logs[7].position.x = 0;
 		
-		logs[8] = new THREE.Mesh(
-        new THREE.BoxGeometry(20,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
+		
+    	logs[8] = new THREE.Mesh( new THREE.BoxGeometry(20,3,3), logMaterial);
+
         logs[8].position.y = 40;
 		logs[8].position.x = 60;
 		
-		/*logs[9] = new THREE.Mesh(
-        new THREE.BoxGeometry(17,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
-        logs[9].position.y = 50;
-		logs[9].position.x = -60;
 		
-		logs[10] = new THREE.Mesh(
-        new THREE.BoxGeometry(10,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
-        logs[10].position.y = 50;
-		logs[10].position.x = 0;
-		
-		logs[11] = new THREE.Mesh(
-        new THREE.BoxGeometry(7,3,3),
-        new THREE.MeshBasicMaterial({color: 0xA52A2A})
-        );
-  
-        logs[11].position.y = 50;
-		logs[11].position.x = 60;*/
 
 		logs[0].geometry.computeBoundingBox();
 		logs[1].geometry.computeBoundingBox();
@@ -383,11 +316,7 @@ var frogger = (function(){
 		logs[6].geometry.computeBoundingBox();
 		logs[7].geometry.computeBoundingBox();
 		logs[8].geometry.computeBoundingBox();
-	//	logs[9].geometry.computeBoundingBox();
-	//	logs[10].geometry.computeBoundingBox();
-	//	logs[11].geometry.computeBoundingBox();
 
-		
 		
         scene.add(logs[0]);
         scene.add(logs[1]);
@@ -398,14 +327,11 @@ var frogger = (function(){
 		scene.add(logs[6]);
         scene.add(logs[7]);
         scene.add(logs[8]);
-      //  scene.add(logs[9]);
-       // scene.add(logs[10]);
-        //scene.add(logs[11]);
-
+      
 		/////////// ADD BANK /////////
 
 		
-		var texturebank = THREE.ImageUtils.loadTexture('bank.jpg');
+		var texturebank = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/bank.jpg');
 		texturebank.wrapS = THREE.RepeatWrapping;
         texturebank.wrapT = THREE.RepeatWrapping;
 		texturebank.repeat.set(10, 1);
@@ -417,13 +343,13 @@ var frogger = (function(){
 		scene.add(bank1);
 		
 		bank2 = new THREE.Mesh( new THREE.BoxGeometry(200, 7), bankMaterial);
-        bank2 . position.y = 50;
+        bank2 . position.y = 51;
 		
 		scene.add(bank2);
 		
 		/////////// ADD GRASS /////////
 
-		var texturegrass = THREE.ImageUtils.loadTexture('grass.jpg');
+		var texturegrass = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/grass.jpg');
 
 		texturegrass.wrapS = THREE.RepeatWrapping;
         texturegrass.wrapT = THREE.RepeatWrapping;
@@ -438,21 +364,15 @@ var frogger = (function(){
 		/////////// ADD FROG /////////
 
 		
-		var texturefrog = THREE.ImageUtils.loadTexture('frog.jpg');
+		var texturefrog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/frog.jpg');
 
 		texturefrog.wrapS = THREE.RepeatWrapping;
         texturefrog.wrapT = THREE.RepeatWrapping;
-		texturefrog.repeat.set(1, 0.5);
+		texturefrog.repeat.set(1, 0.7);
 		
-		var frogMaterial = new THREE.MeshPhongMaterial( {map: texturefrog, side: THREE.SingleSide} );
-		frog = new THREE.Mesh( new THREE.BoxGeometry(3,3,3), frogMaterial);
+		var frogMaterial = new THREE.MeshPhongMaterial( {map: texturefrog, side: THREE.DoubleSide} );
+		frog = new THREE.Mesh( new THREE.BoxGeometry(4,4,4), frogMaterial);
 		
-		
-      //  frog = new THREE.Mesh(
-       // new THREE.BoxGeometry(5,5,5),
-       // new THREE.MeshBasicMaterial({color: 0x00FF00})
-       // );
-  
         frog.position.y = -40;
 
 	    frog.geometry.computeBoundingBox();
@@ -462,6 +382,7 @@ var frogger = (function(){
 		
 		
 		///// ADD SNAKE ////
+		
 		 snake = new THREE.Mesh(
         new THREE.SphereGeometry(2,2,5),
         new THREE.MeshBasicMaterial({color: 0x000000})
@@ -473,41 +394,10 @@ var frogger = (function(){
 
 		
         scene.add(snake);
-		
-
-       // var loader = new THREE.JSONLoader();
-
-       // loader.load("monkey.js", function(geometry, materials) {
-
-         //   var material = new THREE.MeshBasicMaterial({
-           //     color: 0xff0000,
-               // wireframe: true
-           // });
-
-           // monkey = new THREE.Mesh(geometry, material);
-
-            //scene.add(monkey);
-
 	
-		
-		//var loader = new THREE.ColladaLoader();
-        //loader.options.convertUpAxis = true;
-
-		
-		
-		
-        //note monster model is from three.js examples
-       // loader.load('monster.dae', function(collada) {
-       // monster = collada.scene;
-	//	scene.add(monster);
-		
-		
-        
-
-        render();//});
+     	render();
     }
 
-	
 	function animate(){
 		
 		logs[0].translateX(2.0);
@@ -519,9 +409,7 @@ var frogger = (function(){
 		logs[6].translateX(2.5);
         logs[7].translateX(2.5);
         logs[8].translateX(2.5);
-		//logs[9].translateX(-2);
-        //logs[10].translateX(-2);
-        //logs[11].translateX(-2);
+		
 		        
 		if( logs[0].position.x == 100)		
 		logs[0].position.x = -100;
@@ -541,12 +429,7 @@ var frogger = (function(){
 		logs[7].position.x = -100;
 	    if( logs[8].position.x == 100)		
 		logs[8].position.x = -100;
-	  //  if( logs[9].position.x == -100)		
-	//	logs[9].position.x = 100;
-   //  	if( logs[10].position.x == -100)		
-//		logs[10].position.x = 100;
-//	    if( logs[11].position.x == -100)		
-//		logs[11].position.x = 100;
+	 
 	    
 		vehicle[0].translateX(1);
 		vehicle[1].translateX(1);
@@ -593,8 +476,8 @@ var frogger = (function(){
 		snake.position.x = -100;	
 	}
 	
-	var life_lost = 0;
 	
+
 	function game_over(){
 		
 					     audio_main.pause();
@@ -602,15 +485,25 @@ var frogger = (function(){
                          audio_over.play();
 					     alert('GAME OVER');	
 						 life_lost = 0;
+						 score = 0; pressed_up = 0;
+						 			 document.getElementById("Score").innerHTML = score;
+
+						 			 document.getElementById("numberOfLives").innerHTML = 3;
+
 
                         						 
 	}
 	
 	function next_life(){
-		life_lost++;		     frog . position.x = 0; frog.position.y = -40;
 
-		   if(life_lost != 3){
-			 
+    	life_lost++;		     
+		frog . position.x = 0;
+		frog.position.y = -40;
+        pressed_up = 0;
+		
+		if(life_lost != 3){
+			 document.getElementById("numberOfLives").innerHTML = 3-life_lost;
+
 			 audio_main.pause();
 		     audio_down = new Audio('15-1-down.mp3');
              audio_down.play();
@@ -622,19 +515,20 @@ var frogger = (function(){
 
 	function change_level(){
 		
-		life_lost = 0;		     
 		
 		     frog . position.x = 0; frog.position.y = -40;
+			 
+			 score+=100; pressed_up = 0;
+			 document.getElementById("Score").innerHTML = score;
 			 
 			 audio_main.pause();
 		     audio_level = new Audio('04-area-clear.mp3');
              audio_level.play();
-		     alert('CONGRAULATIONS !!');
+		     alert('CONGRATULATIONS !!');
 			 audio_main.play();
 		   		 		
 	}
 		
-	var frogposition;
 	
 	function check_collision(){
 		
@@ -657,43 +551,49 @@ var frogger = (function(){
 		  if(vehicleposition0.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition1.isIntersectionBox(frogposition)){
+		 else if(vehicleposition1.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition2.isIntersectionBox(frogposition)){
+		  else if(vehicleposition2.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition3.isIntersectionBox(frogposition)){
+		  else if(vehicleposition3.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition4.isIntersectionBox(frogposition)){
+		  else if(vehicleposition4.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition5.isIntersectionBox(frogposition)){
+		  else if(vehicleposition5.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition6.isIntersectionBox(frogposition)){
+		  else if(vehicleposition6.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition7.isIntersectionBox(frogposition)){
+		  else if(vehicleposition7.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition8.isIntersectionBox(frogposition)){
+		  else if(vehicleposition8.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition9.isIntersectionBox(frogposition)){
+		  else if(vehicleposition9.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition10.isIntersectionBox(frogposition)){
+		  else if(vehicleposition10.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(vehicleposition11.isIntersectionBox(frogposition)){
+		  else if(vehicleposition11.isIntersectionBox(frogposition)){
 			next_life();
 		  }
-		  if(snakeposition.isIntersectionBox(frogposition)){
+		  else if(snakeposition.isIntersectionBox(frogposition)){
 			next_life(); 
 		  }
-		   
+		   else{
+			if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}
+		}
 	}
 	
 	function check_log(){
@@ -707,34 +607,63 @@ var frogger = (function(){
 		var logsposition6 = new THREE.Box3().setFromObject( logs[6] );
 		var logsposition7 = new THREE.Box3().setFromObject( logs[7] );
 		var logsposition8 = new THREE.Box3().setFromObject( logs[8] );
-	//	var logsposition9 = new THREE.Box3().setFromObject( logs[9] );
-		//var logsposition10 = new THREE.Box3().setFromObject( logs[10] );
-		//var logsposition11 = new THREE.Box3().setFromObject( logs[11] );
+	
 
-		if(logsposition0.isIntersectionBox(frogposition))
-		  frog.translateX(2);		
-	  else if(logsposition1.isIntersectionBox(frogposition))
-		  frog.translateX(2);		
-	  else if(logsposition2.isIntersectionBox(frogposition))
-		  frog.translateX(2);		
-	  else if(logsposition3.isIntersectionBox(frogposition))
-		  frog.translateX(-2);		
-	  else if(logsposition4.isIntersectionBox(frogposition))
-		  frog.translateX(-2);		
-	  else if(logsposition5.isIntersectionBox(frogposition))
-		  frog.translateX(-2);
-	  else if(logsposition6.isIntersectionBox(frogposition))
-		  frog.translateX(2.5);		
-	  else if(logsposition7.isIntersectionBox(frogposition))
-		  frog.translateX(2.5);		
-	  else if(logsposition8.isIntersectionBox(frogposition))
-		  frog.translateX(2.5);		
-	//  else if(logsposition9.isIntersectionBox(frogposition))
-	//	  frog.translateX(-2);		
-	 // else if(logsposition10.isIntersectionBox(frogposition))
-	//	  frog.translateX(-2);		
-	 // else if(logsposition11.isIntersectionBox(frogposition))
-	//	  frog.translateX(-2);	  
+	  if(logsposition0.isIntersectionBox(frogposition)){
+	  frog.translateX(2);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition1.isIntersectionBox(frogposition)){
+	  frog.translateX(2);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition2.isIntersectionBox(frogposition)){
+	  
+	  frog.translateX(2);   if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}		
+	  else if(logsposition3.isIntersectionBox(frogposition)){
+	  frog.translateX(-2);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition4.isIntersectionBox(frogposition)){
+	  frog.translateX(-2);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition5.isIntersectionBox(frogposition)){
+	  frog.translateX(-2);   if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition6.isIntersectionBox(frogposition)){
+	  frog.translateX(2.5);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition7.isIntersectionBox(frogposition)){
+	  frog.translateX(2.5);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
+	  else if(logsposition8.isIntersectionBox(frogposition)){
+	  frog.translateX(2.5);		if(pressed_up == 1){   
+			pressed_up = 0;
+			score+=10;
+			document.getElementById("Score").innerHTML = score;
+			}}
 	  else 
 		  next_life();
 	}
@@ -744,13 +673,17 @@ var frogger = (function(){
          
 		renderer.render(scene, camera); 
         animate();	
+
+		
+	  
 		check_collision();
-		if(life_lost == 3)
-		  game_over();
-	    if((frog.position.y >=15) && (frog.position.y<=45))
+		if((frog.position.y >=15) && (frog.position.y<=45))
 	      check_log();
 	    if(frog.position.y>45)
-	      change_level();		
+	      change_level();
+	    if(life_lost == 3)
+		 game_over();
+	    		
         requestAnimationFrame(render);        
     }
 
@@ -766,8 +699,9 @@ var frogger = (function(){
         e = e || window.event;
 
         if (e.keyCode == up) {
-            frog.position.y += increment;
-        } else if (e.keyCode == down) {
+		    pressed_up = 1;	
+           frog.position.y += increment;
+		} else if (e.keyCode == down) {
             frog.position.y -= increment;
         } else if (e.keyCode == left) {
             frog.position.x -= increment;
@@ -781,22 +715,64 @@ var frogger = (function(){
         } else if (e.keyCode == 87) {
             camera.position.z += increment;
         }
+		 else if (e.keyCode == 65) {
+            camera.position.x -= increment;
+        } else if (e.keyCode == 83) {
+            camera.position.x += increment;
+        }
+		 else if (e.keyCode == 88) {
+            camera.position.y -= increment;
+        } else if (e.keyCode == 90) {
+            camera.position.y += increment;
+        }
+		else if (e.keyCode == 75) {
+            camera.rotation.x -= increment*Math.PI/180;
+        } else if (e.keyCode == 76) {
+            camera.rotation.x += increment*Math.PI/180;
+        }
+		else if (e.keyCode == 77) {
+            camera.rotation.y -= increment*Math.PI/180;
+        } else if (e.keyCode == 78) {
+            camera.rotation.y += increment*Math.PI/180;
+        }
+		else if (e.keyCode == 79) {
+            camera.rotation.z -= increment*Math.PI/180;
+        } else if (e.keyCode == 80) {
+            camera.rotation.z += increment*Math.PI/180;
+        }
 		
 		
-		
-		
-	     
-       
-	
 	}
 	
+	var threed = 0;
+	
+  function myFunction() {
+		
+	if(threed == 0){
+    threed = 1;		
+	camera.position.y = -70;
+	camera.position.z =  95;
+	
+	// rotate to face towards the opponent
+	camera.rotation.x = 30* Math.PI/180;
+	}
+    else
+	{       threed = 0;
+			camera.position.y = 0;
+	        camera.position.z =  130;
+
+			camera.rotation.x = 0;
+
+		
+	}
+   }
+	
+	window.onclick = myFunction;
 	
     window.onload = initScene;
     
 	window.onkeydown = checkKey;
 
   
-
-
 
 })();

@@ -2,11 +2,36 @@
 <HTML>
 <HEAD>
    <TITLE>Frogger</TITLE>
+   
+   <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        #control-panel {
+            position: absolute;
+            right: 500;
+            bottom: 500;
+            background: #ccc;
+            opacity: 1.0;
+            width: 150px;
+            height: 50px;
+        }
+        #control-panel {
+            margin-top: 100px;
+            font-family : arial;
+            font-size: 72px;
+        }
+    </style>
+   
+   
 </HEAD>
 <BODY>
 
 
 <div id="webgl-container"></div>
+
+<button onclick="myFunction()" style="font-family: sans-serif:; font-size: 50px; top: 1px;">Camera</button>
 
 
 <script type="text/javascript" src="three.min.js"></script>
@@ -16,6 +41,15 @@
  
  
 </script>
+
+<div id="control-panel">
+
+    <label>LIVES:</label> <span id="numberOfLives">3</span>
+	<label>SCORE:</label> <span id="Score">0</span>
+
+</div>
+
+      
 
 </BODY>
 </HTML>
