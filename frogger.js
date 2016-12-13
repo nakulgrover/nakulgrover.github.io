@@ -37,7 +37,6 @@ var frogger = (function(){
 
 		
 		
-		renderer.shadowMapEnabled = true;
 
 		THREE.ImageUtils.crossOrigin = 'anonymous'
 		
@@ -47,10 +46,7 @@ var frogger = (function(){
 
 		light.position.set(0, 50, 0);
 
-		light.castShadow = true;
-
-       // light.shadowMapWidth = 2048;
-       // light.shadowMapHeight = 2048;
+		
 		
         scene.add(light);
                           
@@ -69,17 +65,21 @@ var frogger = (function(){
 		
 		/////////// ADD ROAD /////////
 		
-		var textureroad = THREE.ImageUtils.loadTexture("https://nakulgrover.github.io/road.jpg");
+		var loader = new THREE.TextureLoader();
+		//var textureroad = THREE.ImageUtils.loadTexture("https://nakulgrover.github.io/road.jpg");
+		var textureroad = loader.load("https://nakulgrover.github.io/road.jpg");
+
 		textureroad.wrapS = THREE.RepeatWrapping;
         textureroad.wrapT = THREE.RepeatWrapping;
 		textureroad.repeat.set(10, 1);
 
 		
+
 		var roadMaterial = new THREE.MeshPhongMaterial( {map: textureroad, side: THREE.DoubleSide} );
 		road = new THREE.Mesh( new THREE.PlaneGeometry(200, 50), roadMaterial);
         road . position.y = -15;
 		
-		road.receiveShadow = true;
+		
 
 		scene.add(road);
 		
@@ -197,20 +197,7 @@ var frogger = (function(){
 		vehicle[10].geometry.computeBoundingBox();
 		vehicle[11].geometry.computeBoundingBox();
 
-		vehicle[0].castShadow = true;
-		vehicle[1].castShadow = true;
-		vehicle[2].castShadow = true;
-		vehicle[3].castShadow = true;
-		vehicle[4].castShadow = true;
-		vehicle[5].castShadow = true;
-		vehicle[6].castShadow = true;
-		vehicle[7].castShadow = true;
-		vehicle[8].castShadow = true;
-		vehicle[9].castShadow = true;
-		vehicle[10].castShadow = true;
-		vehicle[11].castShadow = true;
 
-		
         scene.add(vehicle[0]);
 		scene.add(vehicle[1]);
         scene.add(vehicle[2]);
@@ -227,8 +214,9 @@ var frogger = (function(){
 		
 		
 	    /////////// ADD RIVER /////////
+		var textureriver = loader.load("https://nakulgrover.github.io/river.jpg");
 
-		var textureriver = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/river.jpg');
+		//var textureriver = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/river.jpg');
 		textureriver.wrapS = THREE.RepeatWrapping;
         textureriver.wrapT = THREE.RepeatWrapping;
 		textureriver.repeat.set(1, 1);
@@ -242,8 +230,9 @@ var frogger = (function(){
 	    
 		/////////// ADD LOGS /////////
 
-		
-		var texturelog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/logs.jpg');
+				var texturelog = loader.load("https://nakulgrover.github.io/logs.jpg");
+
+		//var texturelog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/logs.jpg');
 
 		texturelog.wrapS = THREE.RepeatWrapping;
         texturelog.wrapT = THREE.RepeatWrapping;
@@ -331,7 +320,11 @@ var frogger = (function(){
 		/////////// ADD BANK /////////
 
 		
-		var texturebank = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/bank.jpg');
+		//var texturebank = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/bank.jpg');
+		var texturebank = loader.load("https://nakulgrover.github.io/bank.jpg");
+
+		
+		
 		texturebank.wrapS = THREE.RepeatWrapping;
         texturebank.wrapT = THREE.RepeatWrapping;
 		texturebank.repeat.set(10, 1);
@@ -348,8 +341,9 @@ var frogger = (function(){
 		scene.add(bank2);
 		
 		/////////// ADD GRASS /////////
+		var texturegrass = loader.load("https://nakulgrover.github.io/grass.jpg");
 
-		var texturegrass = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/grass.jpg');
+		//var texturegrass = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/grass.jpg');
 
 		texturegrass.wrapS = THREE.RepeatWrapping;
         texturegrass.wrapT = THREE.RepeatWrapping;
@@ -363,8 +357,9 @@ var frogger = (function(){
 	
 		/////////// ADD FROG /////////
 
-		
-		var texturefrog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/frog.jpg');
+				var texturefrog = loader.load("https://nakulgrover.github.io/frog.jpg");
+
+		//var texturefrog = THREE.ImageUtils.loadTexture('https://nakulgrover.github.io/frog.jpg');
 
 		texturefrog.wrapS = THREE.RepeatWrapping;
         texturefrog.wrapT = THREE.RepeatWrapping;
@@ -550,43 +545,43 @@ var frogger = (function(){
 		
 		frogposition       = new THREE.Box3().setFromObject( frog );
 		  
-		  if(vehicleposition0.isIntersectionBox(frogposition)){
+		  if(vehicleposition0.intersectsBox(frogposition)){
 			next_life();
 		  }
-		 else if(vehicleposition1.isIntersectionBox(frogposition)){
+		 else if(vehicleposition1.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition2.isIntersectionBox(frogposition)){
+		  else if(vehicleposition2.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition3.isIntersectionBox(frogposition)){
+		  else if(vehicleposition3.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition4.isIntersectionBox(frogposition)){
+		  else if(vehicleposition4.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition5.isIntersectionBox(frogposition)){
+		  else if(vehicleposition5.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition6.isIntersectionBox(frogposition)){
+		  else if(vehicleposition6.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition7.isIntersectionBox(frogposition)){
+		  else if(vehicleposition7.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition8.isIntersectionBox(frogposition)){
+		  else if(vehicleposition8.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition9.isIntersectionBox(frogposition)){
+		  else if(vehicleposition9.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition10.isIntersectionBox(frogposition)){
+		  else if(vehicleposition10.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(vehicleposition11.isIntersectionBox(frogposition)){
+		  else if(vehicleposition11.intersectsBox(frogposition)){
 			next_life();
 		  }
-		  else if(snakeposition.isIntersectionBox(frogposition)){
+		  else if(snakeposition.intersectsBox(frogposition)){
 			next_life(); 
 		  }
 		   else{
@@ -611,56 +606,56 @@ var frogger = (function(){
 		var logsposition8 = new THREE.Box3().setFromObject( logs[8] );
 	
 
-	  if(logsposition0.isIntersectionBox(frogposition)){
+	  if(logsposition0.intersectsBox(frogposition)){
 	  frog.translateX(1*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition1.isIntersectionBox(frogposition)){
+	  else if(logsposition1.intersectsBox(frogposition)){
 	  frog.translateX(1*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition2.isIntersectionBox(frogposition)){
+	  else if(logsposition2.intersectsBox(frogposition)){
 	  
 	  frog.translateX(1*translatespeed);   if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}		
-	  else if(logsposition3.isIntersectionBox(frogposition)){
+	  else if(logsposition3.intersectsBox(frogposition)){
 	  frog.translateX(-1*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition4.isIntersectionBox(frogposition)){
+	  else if(logsposition4.intersectsBox(frogposition)){
 	  frog.translateX(-1*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition5.isIntersectionBox(frogposition)){
+	  else if(logsposition5.intersectsBox(frogposition)){
 	  frog.translateX(-1*translatespeed);   if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition6.isIntersectionBox(frogposition)){
+	  else if(logsposition6.intersectsBox(frogposition)){
 	  frog.translateX(1.25*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition7.isIntersectionBox(frogposition)){
+	  else if(logsposition7.intersectsBox(frogposition)){
 	  frog.translateX(1.25*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
 			document.getElementById("Score").innerHTML = score;
 			}}
-	  else if(logsposition8.isIntersectionBox(frogposition)){
+	  else if(logsposition8.intersectsBox(frogposition)){
 	  frog.translateX(1.25*translatespeed);		if(pressed_up == 1){   
 			pressed_up = 0;
 			score+=10;
