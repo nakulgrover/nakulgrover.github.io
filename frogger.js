@@ -673,8 +673,6 @@ var frogger = (function(){
          
 		renderer.render(scene, camera); 
         
-		if((audio_down.ended) && (audio_over.ended) && (audio_level.ended))
-		audio_main.play();
 		
 		animate();	
 
@@ -703,14 +701,14 @@ var frogger = (function(){
         e = e || window.event;
 
         if (e.keyCode == up) {
-		    pressed_up = 1;	
+		    pressed_up = 1;	 play();
            frog.position.y += increment;
 		} else if (e.keyCode == down) {
-            frog.position.y -= increment;
+            frog.position.y -= increment;play();
         } else if (e.keyCode == left) {
-            frog.position.x -= increment;
+            frog.position.x -= increment;play();
         } else if (e.keyCode == right) {
-            frog.position.x += increment;
+            frog.position.x += increment;play();
         }
 		
 		
@@ -776,7 +774,15 @@ var frogger = (function(){
 		
 	}
    }
+   
+     function play(){
+		 
+		 audio_main.play();
+				 
+	 }
+	 
 	
+
 	window.onclick = myFunction;
 	
     window.onload = initScene;
