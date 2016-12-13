@@ -71,7 +71,7 @@ var frogger = (function(){
 
 		textureroad.wrapS = THREE.RepeatWrapping;
         textureroad.wrapT = THREE.RepeatWrapping;
-		textureroad.repeat.set(10, 1);
+		textureroad.repeat.set(3, 1);
 
 		
 
@@ -363,9 +363,9 @@ var frogger = (function(){
 
 		texturefrog.wrapS = THREE.RepeatWrapping;
         texturefrog.wrapT = THREE.RepeatWrapping;
-		texturefrog.repeat.set(1, 0.7);
+		texturefrog.repeat.set(1, 1.0);
 		
-		var frogMaterial = new THREE.MeshPhongMaterial( {map: texturefrog, side: THREE.DoubleSide} );
+		var frogMaterial = new THREE.MeshPhongMaterial( {map: texturefrog, side: THREE.SingleSide} );
 		frog = new THREE.Mesh( new THREE.BoxGeometry(4,4,4), frogMaterial);
 		
         frog.position.y = -40;
