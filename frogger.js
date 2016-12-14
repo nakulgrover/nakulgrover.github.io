@@ -361,7 +361,7 @@ var frogger = (function(){
 		
 		var grassMaterial = new THREE.MeshPhongMaterial( {map: texturegrass, side: THREE.DoubleSide} );
 		grass = new THREE.Mesh( new THREE.BoxGeometry(200, 25), grassMaterial);
-        grass . position.y = -50;
+        grass . position.y = -52;
 		
 		scene.add(grass);
 	
